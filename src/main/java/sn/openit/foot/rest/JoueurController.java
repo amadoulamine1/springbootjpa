@@ -35,12 +35,16 @@ public class JoueurController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Joueur",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Joueur.class))})
+                            schema = @Schema(implementation = Joueur.class))}),
+            @ApiResponse(responseCode = "404", description = "Joueur not found")
+
     })
     @GetMapping("{lastName}")
     public Joueur getByLastName(@PathVariable("lastName") String lastName) {
         return JoueurList.ALL.stream()
-                .filter(joueur -> joueur.getLastName().equals(lastName)) .findFirst() .orElse(null);
+                .filter(joueur -> joueur.getLastName().equals(lastName))
+                .findFirst()
+                .orElseThrow();
     }
 
 
