@@ -1,8 +1,13 @@
 package sn.openit.foot;
 
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class Rank {
 
+    @Positive
     private int position;
+    @PositiveOrZero
     private int points;
 
     public Rank(int position, int points) {

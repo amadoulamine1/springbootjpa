@@ -8,10 +8,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import sn.openit.foot.Joueur;
+import sn.openit.foot.JoueurList;
 
-import java.util.Collections;
 import java.util.List;
 
 @Tag(name = "Equipe Foot Joueurs API")
@@ -26,7 +27,7 @@ public class JoueurController {
     })
     @GetMapping
     public List<Joueur> list() {
-        return Collections.emptyList();
+        return JoueurList.ALL;
     }
 
 
@@ -38,7 +39,8 @@ public class JoueurController {
     })
     @GetMapping("{lastName}")
     public Joueur getByLastName(@PathVariable("lastName") String lastName) {
-        return null;
+        return JoueurList.ALL.stream()
+                .filter(joueur -> joueur.getLastName().equals(lastName)) .findFirst() .orElse(null);
     }
 
 
@@ -49,7 +51,7 @@ public class JoueurController {
                             schema = @Schema(implementation = Joueur.class))})
     })
     @PostMapping
-    public Joueur createJoueur(@RequestBody Joueur joueur) {
+    public Joueur createJoueur(@Valid @RequestBody Joueur joueur) {
         return joueur;
     }
 
@@ -59,7 +61,7 @@ public class JoueurController {
                     content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Joueur.class))})
         })
     @PutMapping
-    public Joueur updateJoueur(@RequestBody Joueur joueur) {
+    public Joueur updateJoueur(@Valid @RequestBody Joueur joueur) {
         return joueur;
     }
 

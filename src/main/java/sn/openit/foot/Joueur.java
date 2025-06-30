@@ -1,11 +1,19 @@
 package sn.openit.foot;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDate;
 
 public class Joueur {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @PastOrPresent
     private LocalDate birthDate;
+    @Valid
     private Rank rank;
 
     public Joueur(String firstName, String lastName, LocalDate birthDate, Rank rank) {
@@ -46,4 +54,6 @@ public class Joueur {
     public void setRank(Rank rank) {
         this.rank = rank;
     }
+
+
 }
