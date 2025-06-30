@@ -9,9 +9,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sn.openit.foot.Joueur;
-import sn.openit.foot.JoueurList;
+import sn.openit.foot.service.JoueurService;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/joueurs")
 public class JoueurController {
+
+    @Autowired
+    private JoueurService joueurService;
+
     @Operation(summary = "Finds joueurs", description = "Finds joueurs")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Joueurs list",
@@ -27,7 +32,7 @@ public class JoueurController {
     })
     @GetMapping
     public List<Joueur> list() {
-        return JoueurList.ALL;
+        return joueurService.getAllJoueurs();
     }
 
 
@@ -35,16 +40,16 @@ public class JoueurController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Joueur",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Joueur.class))}),
-            @ApiResponse(responseCode = "404", description = "Joueur not found")
-
+                            schema = @Schema(implementation = Joueur.class))
+                            }),
+            @ApiResponse(responseCode = "404", description = "A joueur with the specified last name was not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class))
+            })
     })
     @GetMapping("{lastName}")
     public Joueur getByLastName(@PathVariable("lastName") String lastName) {
-        return JoueurList.ALL.stream()
-                .filter(joueur -> joueur.getLastName().equals(lastName))
-                .findFirst()
-                .orElseThrow();
+        return joueurService.getByLastName(lastName);
     }
 
 

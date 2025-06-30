@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
-public class JoueurControllerErrorHandler {
+public class  JoueurControllerErrorHandler {
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleNoElementException(){}
@@ -28,5 +28,15 @@ public class JoueurControllerErrorHandler {
                     errors.put(fieldName, errorMessage);
                 });
         return errors;
+    }
+
+    @ExceptionHandler(JoueurNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Error handleJoueurNotFoundException(JoueurNotFoundException ex) {
+        return new Error(ex.getMessage());
+    }
+
+    public record Error(String errorDetails) {
+
     }
 }
