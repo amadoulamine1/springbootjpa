@@ -1,4 +1,9 @@
 package sn.openit.foot;
 
-public class ApplicationStatus {
+/**
+ * Represents the possible statuses of the application.
+ */
+public enum ApplicationStatus {
+    OK,
+    KO
 }
