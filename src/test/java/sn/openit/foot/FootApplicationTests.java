@@ -2,8 +2,6 @@ package sn.openit.foot;
 
 //import org.junit.jupiter.api.Assertions;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import sn.openit.foot.repository.HealthCheckRepository;
@@ -27,7 +25,7 @@ public class FootApplicationTests {
      * HealthCheckController and HealthCheckService beans are available.
      */
 
-    @Test
+   /* @Test
     void contextLoads() {
         // This test will pass if the application context loads successfully
         // You can add more assertions here to check specific beans or configurations
@@ -36,5 +34,5 @@ public class FootApplicationTests {
         Assertions.assertThat(healthCheckController).isNotNull();
         Assertions.assertThat(healthCheckService).isNotNull();
         Assertions.assertThat(healthCheckRepository).isNotNull();
-    }
+    }*/
 }

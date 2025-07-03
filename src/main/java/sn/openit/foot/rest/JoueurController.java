@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sn.openit.foot.Joueur;
+import sn.openit.foot.JoueurToSave;
 import sn.openit.foot.service.JoueurService;
 
 import java.util.List;
@@ -41,11 +42,11 @@ public class JoueurController {
             @ApiResponse(responseCode = "200", description = "Joueur",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Joueur.class))
-                            }),
+                    }),
             @ApiResponse(responseCode = "404", description = "A joueur with the specified last name was not found",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Error.class))
-            })
+                    })
     })
     @GetMapping("{lastName}")
     public Joueur getByLastName(@PathVariable("lastName") String lastName) {
@@ -57,28 +58,47 @@ public class JoueurController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created joueur",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Joueur.class))})
+                            schema = @Schema(implementation = Joueur.class))}),
+            @ApiResponse(responseCode = "400", description = "Joueur with specified last name already exists.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class))
+                    })
     })
     @PostMapping
-    public Joueur createJoueur(@Valid @RequestBody Joueur joueur) {
-        return joueur;
+    public Joueur createJoueur(@Valid @RequestBody JoueurToSave joueurToSave) {
+        return joueurService.create(joueurToSave);
     }
 
     @Operation(summary = "Updates a joueur", description = "Updates a joueur")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated joueur",
-                    content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Joueur.class))})
-        })
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JoueurToSave.class))}),
+            @ApiResponse(responseCode = "404", description = "A joueur with the specified last name was not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class))
+                    })
+    })
     @PutMapping
-    public Joueur updateJoueur(@Valid @RequestBody Joueur joueur) {
-        return joueur;
+    public Joueur updateJoueur(@Valid @RequestBody JoueurToSave joueurToSave) {
+        return joueurService.update(joueurToSave);
     }
 
-    @Operation(summary = "Deletes a joueur", description = "Deletes a joueur")
+
+    /*@Operation(summary = "Creates a joueur", description = "Creates a joueur")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Joueur has been deleted")
+            @ApiResponse(responseCode = "200", description = "Created joueur",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = JoueurToSave.class))})
     })
+    @PostMapping
+    public Joueur createJoueur(@RequestBody @Valid JoueurToSave joueurToSave) {
+        return joueurService.create(joueurToSave);
+    }*/
+
+    @Operation(summary = "Deletes a joueur", description = "Deletes a joueur")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Joueur has been deleted"), @ApiResponse(responseCode = "404", description = "Joueur with specified last name was not found.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))})})
     @DeleteMapping("{lastName}")
     public void deleteJoueurByLastName(@PathVariable("lastName") String lastName) {
+        joueurService.delete(lastName);
     }
 }

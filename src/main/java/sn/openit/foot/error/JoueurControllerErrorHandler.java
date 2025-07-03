@@ -39,4 +39,10 @@ public class  JoueurControllerErrorHandler {
     public record Error(String errorDetails) {
 
     }
+
+    @ExceptionHandler(JoueurAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Error handleJoueurAlreadyExistsException(JoueurAlreadyExistException ex) {
+        return new Error(ex.getMessage());
+    }
 }
