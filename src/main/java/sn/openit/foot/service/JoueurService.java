@@ -22,6 +22,10 @@ public class JoueurService {
     @Autowired
     private JoueurRepository joueurRepository;
 
+    public JoueurService(JoueurRepository joueurRepository) {
+        this.joueurRepository = joueurRepository;
+    }
+
     public List<Joueur> getAllJoueurs() {
         return joueurRepository
                 .findAll().stream()
